@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_ID = 'microservice-image'
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
         SSH_CREDENTIAL_TEST_ID = 'ssh-key-id-in-jenkins'
         SCRIPT = 'docker-compose.yml'
@@ -16,19 +15,21 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build & Push All Services') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE_ID}")
-                }
-            }
-        }
+                    def services = ['customers', 'gateway', 'products', 'proxy', 'shopping']
 
-         stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                        docker.image("${DOCKER_IMAGE_ID}").push()
+                    for (service in services) {
+                        def imageName = "ashwanidevops321/${service}:latest"
+                        dir(service) {
+                            echo "🔧 Building image for ${service}"
+                            def image = docker.build(imageName)
+                            docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                                echo "📤 Pushing image ${imageName} to DockerHub"
+                                image.push()
+                            }
+                        }
                     }
                 }
             }
