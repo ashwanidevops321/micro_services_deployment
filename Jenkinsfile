@@ -18,7 +18,7 @@ pipeline {
         stage('Build & Push All Services') {
             steps {
                 script {
-                    def services = ['customers', 'gateway', 'products', 'proxy', 'shopping']
+                    def services = ['customer', 'gateway', 'products', 'proxy', 'shopping']
 
                     for (service in services) {
                         def imageName = "ashwanidevops321/${service}:latest"
