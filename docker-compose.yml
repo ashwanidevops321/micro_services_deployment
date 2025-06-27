@@ -6,61 +6,47 @@ services:
       - "27018:27017"
     container_name: nosql-db
     volumes:
-      - ./db/:/data/db
+      - ./db:/data/db
+
   products:
-    build:
-      dockerfile: Dockerfile
-      context: ./products
+    image: ashwanidevops321/products:latest
     container_name: products
     ports:
       - "8002:8002"
     restart: always
     depends_on:
-      - "nosql-db"
-    volumes:
-      - .:/app
-      - /app/products/node_modules
-
+      - nosql-db
     env_file:
-      - ./products/.env.dev
+      - ./env/products.env
+
   shopping:
-    build:
-      dockerfile: Dockerfile
-      context: ./shopping
+    image: ashwanidevops321/shopping:latest
     container_name: shopping
     ports:
       - "8003:8003"
     restart: always
     depends_on:
-      - "nosql-db"
-    volumes:
-      - .:/app
-      - /app/shopping/node_modules
+      - nosql-db
     env_file:
-      - ./shopping/.env.dev
+      - ./env/shopping.env
+
   customer:
-    build:
-      dockerfile: Dockerfile
-      context: ./customer
+    image: ashwanidevops321/customer:latest
     container_name: customer
     ports:
       - "8001:8001"
     restart: always
     depends_on:
-      - "nosql-db"
-
-    volumes:
-      - .:/app/
-      - /app/customer/node_modules
+      - nosql-db
     env_file:
-      - ./customer/.env.dev
+      - ./env/customer.env
+
   nginx-proxy:
-    build:
-      dockerfile: Dockerfile
-      context: ./proxy
+    image: ashwanidevops321/proxy:latest
+    container_name: nginx-proxy
+    ports:
+      - "8080:8080"
     depends_on:
       - products
       - shopping
       - customer
-    ports:
-      - 80:80
