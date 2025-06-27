@@ -8,6 +8,13 @@ services:
     volumes:
       - ./db:/data/db
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"     # For app connection
+      - "15672:15672"   # For management UI
+
   products:
     image: ashwanidevops321/products:latest
     container_name: products
@@ -16,6 +23,7 @@ services:
     restart: always
     depends_on:
       - nosql-db
+      - rabbitmq
     env_file:
       - ./env/products.env
 
@@ -27,6 +35,7 @@ services:
     restart: always
     depends_on:
       - nosql-db
+      - rabbitmq
     env_file:
       - ./env/shopping.env
 
@@ -38,6 +47,7 @@ services:
     restart: always
     depends_on:
       - nosql-db
+      - rabbitmq
     env_file:
       - ./env/customer.env
 
