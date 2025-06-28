@@ -77,6 +77,3 @@ pipeline {
         }
     }
 }
-// This Jenkinsfile is designed to build and deploy a microservices application using Docker and Docker Compose.
-// It includes stages for checking out the code, building and pushing Docker images for each service,
-// and deploying the application to a remote server using SSH and Docker Compose.

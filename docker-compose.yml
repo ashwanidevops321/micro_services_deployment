@@ -7,13 +7,17 @@ services:
     container_name: nosql-db
     volumes:
       - ./db:/data/db
+    networks:
+      - app-network
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - "5672:5672"     # For app connection
-      - "15672:15672"   # For management UI
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
 
   products:
     image: ashwanidevops321/products:latest
@@ -26,6 +30,8 @@ services:
       - rabbitmq
     env_file:
       - ./env/products.env
+    networks:
+      - app-network
 
   shopping:
     image: ashwanidevops321/shopping:latest
@@ -38,6 +44,8 @@ services:
       - rabbitmq
     env_file:
       - ./env/shopping.env
+    networks:
+      - app-network
 
   customer:
     image: ashwanidevops321/customer:latest
@@ -50,6 +58,8 @@ services:
       - rabbitmq
     env_file:
       - ./env/customer.env
+    networks:
+      - app-network
 
   nginx-proxy:
     image: ashwanidevops321/proxy:latest
@@ -60,3 +70,9 @@ services:
       - products
       - shopping
       - customer
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true
