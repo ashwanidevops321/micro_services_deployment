@@ -2,7 +2,7 @@ version: "3"
 
 services:
 
-  db:
+  sonardb:
     image: postgres:13
     container_name: sonardb
     environment:
@@ -93,11 +93,11 @@ services:
     ports:
       - "9000:9000"
     environment:
-      - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar
+      - SONAR_JDBC_URL=jdbc:postgresql://sonardb:5432/sonar
       - SONAR_JDBC_USERNAME=sonar
       - SONAR_JDBC_PASSWORD=sonar
     depends_on:
-      - db
+      - sonardb
     networks:
       - app-network
 
