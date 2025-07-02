@@ -1,0 +1,6 @@
+projectKey=micro_services
+serverUrl=http://3.110.11.141:9000
+serverVersion=25.6.0.109173
+dashboardUrl=http://3.110.11.141:9000/dashboard?id=micro_services
+ceTaskId=bda4eb3b-0155-493c-a050-c9a13db973c2
+ceTaskUrl=http://3.110.11.141:9000/api/ce/task?id=bda4eb3b-0155-493c-a050-c9a13db973c2
